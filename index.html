@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Snack Tracker</title>
 
+    <script src="js/autocomplete.js"></script>
+
     <link href="index.css" rel="stylesheet">
     <!--Color Palette FEC20F - ED1C23 - 0D3B66 - 008148 - 5AA9E6-->
 </head>
@@ -22,98 +24,7 @@
     <script>
         var foods = ["Asparagus","Apples","Avacado","Alfalfa","Acorn Squash","Almond","Arugala","Artichoke","Applesauce","Asian Noodles","Antelope","Ahi Tuna","Albacore Tuna","Apple Juice","Avocado Roll","Bruscetta","Bacon","Black Beans","Bagels","Baked Beans","BBQ","Bison","Barley","Beer","Bisque","Bluefish","Bread","Broccoli","Buritto","Babaganoosh","Cabbage","Cake","Carrots","Carne Asada","Celery","Cheese","Chicken","Catfish","Chips","Chocolate","Chowder","Clams","Coffee","Cookies","Corn","Cupcakes","Crab","Curry","Cereal","Chimichanga","Dates","Dips","Duck","Dumplings","Donuts","Eggs","Enchilada","Eggrolls","English Muffins","Edimame","Eel Sushi","Fajita","Falafel","Fish","Franks","Fondu","French Toast","French Dip","Garlic","Ginger","Gnocchi","Goose","Granola","Grapes","Green Beans","Guancamole","Gumbo","Grits","Graham Crackers","Ham","Halibut","Hamburger","Cheeseburger","Honey","Huenos Rancheros","Hash Browns","Hot Dogs","Haiku Roll","Hummus","Ice Cream","Irish Stew","Indian Food","Italian Bread","Jambalaya","Jelly","Jam","Jerky","Jalapeño","Kale","Kabobs","Ketchup","Kiwi","Kidney Beans","Kingfish","Lobster","Lamb","Linguine","Lasagna","Meatballs","Moose","Milk","Milkshake","Noodles","Ostrich","Pizza","Pepperoni","Porter","Pancakes","Quesadilla","Quiche","Reuben","Spinach","Spaghetti","Tangerine","Tater Tots","Toast","Venison","Waffles","Wine","Walnuts","Yogurt","Ziti","Zucchini"];
 
-        function autocomplete(inp, arr) { // Hey
-            /*two arguments,
-            the text field element and an array of possible autocompleted values:*/
-            var currentFocus;
-            // Executes a function when someone writes in the text field
-            inp.addEventListener("input", function(e) {
-                var a, b, i, val = this.value;
-                // Close any already open lists of autocompleted values
-                closeAllLists();
-                if (!val) { return false; }
-                currentFocus = -1;
-                // Creates a DIV element that will contain the items (values)
-                a = document.createElement("DIV");
-                a.setAttribute("id", this.id + "autocomplete-list");
-                a.setAttribute("class", "autocomplete-items");
-                // Append the DIV element as a child of the autocomplete container
-                this.parentNode.appendChild(a);
-                // for each item in the array...
-                for (i = 0; i < arr.length; i++) {
-                    // Check if the item starts with the same letters as the text field values
-                    if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
-                        // Creates a DIV element for each matching element
-                        let b = document.createElement("DIV");
-                        // Make the matching letters bold
-                        b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
-                        b.innerHTML += arr[i].substr(val.length);
-                        // Insert a input field that will hold the current array item's value
-                        b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
-                        // Executes a function when someone clicks on the item value (DIV element)
-                        b.addEventListener("click", function(e) {
-                            // Insert the value for the autocomplete text field
-                            inp.value = this.getElementsByTagName("input")[0].value;
-                            // Close the lists of autocompleted values
-                            closeAllLists();
-                        });
-                        a.appendChild(b);
-                    }
-                }
-            });
-            // Executes a function presses a key on the keyboard
-            inp.addEventListener("keydown", function(e) {
-                var x = document.getElementById(this.id + "autocomplete-list");
-                if (x) x = x.getElementsByTagName("div");
-                if (e.keyCode == 40) {
-                    // If the arrow DOWN key is pressed, increase the currentFocus variable
-                    currentFocus++;
-                    // And make the current item more visisble
-                    addActive(x);
-                } else if (e.keyCode == 38) { // UP
-                    // If the arrow UP key is pressed, increase decrease the currentFocus variable
-                    currentFocus--;
-                    // and make the current item more visible
-                    addActive(x);
-                } else if (e.keyCode == 13) { // Enter
-                    // If the ENTER key is pressed, prevent the form from being submitted
-                    e.preventDefault();
-                    if (currentFocus > -1) {
-                        // And simulate a click on the "active" item
-                        if (x) x[currentFocus].click();
-                    }
-                }
-            });
-            function addActive(x) {
-                // A function to classify an item as "active"
-                if (!x) return false;
-                // Start by removing the "active" class on all items
-                removeActive(x);
-                if (currentFocus >= x.length) currentFocus = 0;
-                if (currentFocus < 0) currentFocus = (x.length -1);
-                // Add class "autocomplete-acive"
-                x[currentFocus].classList.add("autocomplete-active");
-            }
-            function removeActive(x) {
-                // A function to remove the "active" class from all autocomplete items
-                for (var i = 0; i < x.length; i++) {
-                    x[i].classList.remove("autocomplete-active");
-                }
-            }
-            function closeAllLists(elmnt) {
-                // Close all autocomplete lists in the document EXCEPT the one passed as an argument
-                let x = document.getElementsByClassName("autocomplete-items");
-                for (let i = 0; i < x.length; i++) {
-                    if (elmnt != x[i] && elmnt != inp) {
-                        x[i].parentNode.removeChild(x[i]);
-                    }
-                }
-            }
-            document.addEventListener("click", function (e) {
-                closeAllLists(e.target);
-            });
-        }
-        autocomplete(document.getElementById("myInput"), foods);
+        autoComplete(document.getElementById("myInput"), foods);
     </script>
 
 </body>
