@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table, th, td {
+            border-bottom: 1px solid black;
+            border-collapse: collapse;
+            padding: 3px;
+        }
+        table {
+            width: 250px;
+        }
+        th:nth-child(2), td:nth-child(2) {
+            text-align: right;
+            font-weight: bold;
+        }
+        th:nth-child(1), td:nth-child(1) {
+            text-align: left;
+        }
+        h1, h4, h6, h2, h3, h5 {
+            margin: unset;
+        }
+        body {
+            font-family: sans-serif;
+        }
+        [block] {
+            background-color: black;
+        }
+        [tabbed]::before {
+            content: "\00a0\00a0\00a0";
+        }
+        [important] {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <table>
+        <tr>
+            <th colspan="2"><h2>Nutrition Facts</h2></th>
+        </tr>
+        <tr>
+            <td><h3>Serving Size</h3></td>
+            <td><h3>227g</h3></td>
+        </tr>
+        <tr>
+            <td block colspan="2"></td>
+        </tr>
+        <tr>
+            <td colspan="2"><h5>Amount per serving</h5></td>
+        </tr>
+        <tr>
+            <td><h3>Calories</h3></td>
+            <td><h3>280</h3></td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align: right;"><h5>% Daily Value</h5></td>
+        </tr>
+        <tr>
+            <td><strong>Fat</strong> 9g</td>
+            <td>12%</td>
+        </tr>
+        <tr>
+            <td tabbed>Saturated Fat 4.5g</td>
+            <td>23%</td>
+        </tr>
+        <tr>
+            <td tabbed>Trans Fat 0g</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td><strong>Cholesterol</strong> 35mg</td>
+            <td>12%</td>
+        </tr>
+        <tr>
+            <td><strong>Sodium</strong> 850mg</td>
+            <td>37%</td>
+        </tr>
+        <tr>
+            <td><strong>Total Carbohydrates</strong> 34g</td>
+            <td>12%</td>
+        </tr>
+        <tr>
+            <td tabbed>Dietary Fiber 4g</td>
+            <td>14%</td>
+        </tr>
+        <tr>
+            <td tabbed>Total Sugars 6g</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td tabbed>Includes 0g Add Sugars</td>
+            <td>0%</td>
+        </tr>
+        <tr>
+            <td><strong>Protein</strong> 15g</td>
+        </tr>
+        <tr>
+            <td block colspan="2"></td>
+        </tr>
+        <tr>
+            <td>Vitamin D 0mcg</td>
+            <td>0%</td>
+        </tr>
+        <tr>
+            <td>Calcium 320mg</td>
+            <td>25%</td>
+        </tr>
+        <tr>
+            <td>Iron 1.6mg</td>
+            <td>8%</td>
+        </tr>
+        <tr>
+            <td>Potassium 510mg</td>
+            <td>10%</td>
+        </tr>
+    </table>
+    <script>
+        nutritionLabel = {
+            servingSize: 277,
+            calories: 280,
+            nutrients: {
+                fat: 9,
+                satFat: 4.5,
+                tranFat: 0,
+                cholesterol: 35,
+                sodium: 850,
+                totCarbs: 34,
+                dietFiber: 4,
+                totSugars: 6,
+                addSugars: 0,
+                protein: 15
+            },
+            vitaminerals: {
+                vitaminD: 0,
+                calcium: 320,
+                iron: 1.6,
+                potassium: 510
+            }
+        }
+    </script>
+</body>
+</html>

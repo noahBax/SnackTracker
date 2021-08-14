@@ -1,3 +1,7 @@
+// Todo: Make it so that the nutrition label for each item pops up when it is selected
+// Todo: Make it so that selecting the question-div pops up a form which can be filled in in the shape of a nutrition label
+// I suggest doing this by actually making an HTML version of the form that pops up every time though who knows
+const QUESTION_VALUE = "question_value";
 /**
  * Takes care of autocomplete items
  * @param inp The text field element
@@ -22,14 +26,14 @@ function autoComplete(inp, arr) {
         // If there is no search query, don't show results
         if (this.value == "")
             return false;
-        currentFocus = -1;
-        let tempList = Array.from(arr);
-        let searchMatchesBegin = [];
+        currentFocus = 0;
+        let exactMatch = null;
+        let searchMatchesBegin = []; // query item, indexes
         let searchMatchesRandom = [];
         // For each item in the tempListay...
-        for (let i = 0; i < tempList.length; i++) {
+        for (let i = 0; i < arr.length; i++) {
             // Search through the entire string for the input value
-            let temp = tempList[i].toLowerCase().matchAll(searchQuery);
+            let temp = arr[i].toLowerCase().matchAll(searchQuery);
             let matches = [];
             let b = temp.next();
             while (!b.done) {
@@ -37,23 +41,52 @@ function autoComplete(inp, arr) {
                 b = temp.next();
             }
             if (matches.length > 0) {
+                let found = false;
                 for (let j = 0; j < matches.length; j++) {
-                    if (matches[j] == 0 || tempList[i])
-                        ;
+                    if (matches[j] == 0 || arr[i][matches[j] - 1] == " ") {
+                        found = true;
+                        break;
+                    }
+                }
+                if (this.value == arr[i]) {
+                    exactMatch = [arr[i], matches];
+                }
+                if (found) {
+                    searchMatchesBegin.push([arr[i], matches]);
+                }
+                else {
+                    searchMatchesRandom.push([arr[i], matches]);
                 }
             }
         }
+        // If there are no results, cancel
+        if (searchMatchesRandom.length == 0 && searchMatchesBegin.length == 0 && exactMatch == null) {
+            addQuestionDiv();
+            addActive();
+            return false;
+        }
+        if (exactMatch != null)
+            addSearchDiv(exactMatch[0], exactMatch[1]);
+        for (let i = 0; i < searchMatchesBegin.length; i++) {
+            addSearchDiv(searchMatchesBegin[i][0], searchMatchesBegin[i][1]);
+        }
+        for (let i = 0; i < searchMatchesRandom.length; i++) {
+            addSearchDiv(searchMatchesRandom[i][0], searchMatchesRandom[i][1]);
+        }
+        addActive();
     });
     // Call a function when someone presses a key on the keyboard
     inp.addEventListener("keydown", function (e) {
         if (activeElements.firstChild) {
             if (e.code == "ArrowDown") {
+                e.preventDefault();
                 // DOWN key, increase focus
                 removeActive();
                 currentFocus++;
                 addActive();
             }
             else if (e.code == "ArrowUp") {
+                e.preventDefault();
                 // UP key, decrease focus
                 removeActive();
                 currentFocus--;
@@ -64,35 +97,55 @@ function autoComplete(inp, arr) {
                 e.preventDefault();
                 // And update the input field if needed
                 if (currentFocus > -1) {
-                    inp.value = activeElements.getElementsByTagName("div")[currentFocus].getElementsByTagName("input")[0].value;
+                    let entry = activeElements.getElementsByTagName("div")[currentFocus].getElementsByTagName("input")[0].value;
+                    if (entry == QUESTION_VALUE) {
+                        questionClicked();
+                    }
+                    else {
+                        inp.value = activeElements.getElementsByTagName("div")[currentFocus].getElementsByTagName("input")[0].value;
+                    }
                     // CLose the lists of autocompleted values
                     closeAllLists();
                 }
             }
         }
     });
-    function addSearchDiv(resultObj) {
+    function addSearchDiv(item, matches) {
         // Create a DIV element for the matching search
         let a = document.createElement("DIV");
         a.innerHTML = "";
         // Make the matching letters bold
         let cursor = 0;
         for (let j = 0; j < matches.length; j++) {
-            a.innerHTML += tempList[i].slice(cursor, matches[j]) + "<strong>" + tempList[i].substr(matches[j], this.value.length) + "</strong>";
-            cursor = matches[j] + this.value.length;
+            a.innerHTML += item.slice(cursor, matches[j]) + "<strong>" + item.substr(matches[j], inp.value.length) + "</strong>";
+            cursor = matches[j] + inp.value.length;
         }
         // Add the remaining part of the strign
-        a.innerHTML += tempList[i].substr(cursor);
+        a.innerHTML += item.substr(cursor);
         // Insert a hidden input field that will hold the current array item's value
-        a.innerHTML += "<input type='hidden' value='" + tempList[i] + "'>";
+        a.innerHTML += "<input type='hidden' value='" + item + "'>";
         // Call a function when someoen clicks on this DIV element
         a.addEventListener("click", function (e) {
             // Insert the value fo rthe autocomplete text field
-            inp.value = this.getElementsByTagName("input")[0].value;
+            inp.value = item;
             // CLose the lists of autocompleted values
             closeAllLists();
         });
         activeElements.appendChild(a);
+    }
+    function addQuestionDiv() {
+        let a = document.createElement("DIV");
+        a.innerHTML = "<i>Not in database, add an entry?</i>";
+        // Insert a hidden input field that will hold the current array item's value
+        a.innerHTML += "<input type='hidden' value='" + QUESTION_VALUE + "'>";
+        a.classList.add("question-div");
+        a.addEventListener("click", function (e) {
+            questionClicked();
+        });
+        activeElements.appendChild(a);
+    }
+    function questionClicked() {
+        console.warn("Function 'questionClicked' not implemented yet");
     }
     /**
      * Close all autocompleted list items
@@ -115,3 +168,23 @@ function autoComplete(inp, arr) {
         activeElements.getElementsByTagName("DIV")[currentFocus].classList.remove("autocomplete-active");
     }
 }
+// nutritionLabel: NutritionLabel = {
+//     servingSize: 277,
+//     calories: 280,
+//     nutrients: {
+//         fat: 9,
+//         satFat: 4.5,
+//         tranFat: 0,
+//         cholesterol: 35,
+//         sodium: 850,
+//         totCarbs: 34,
+//         dietFiber: 4,
+//         totSugars: 6,
+//         addSugars: 0,
+//         protein: 15,
+//         vitaminD: 0,
+//         calcium: 320,
+//         iron: 1.6,
+//         potassium: 510
+//     }
+// }
