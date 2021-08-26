@@ -1,3 +1,5 @@
+// Todo: Test out a mock nutrition label with the added "nutrtion-label element", you will need to make a nutrition object first
+//  Todo: Complete the nutrition label test by making a fulll label
 // Todo: Make it so that the nutrition label for each item pops up when it is selected
 // Todo: Make it so that selecting the question-div pops up a form which can be filled in in the shape of a nutrition label
 // I suggest doing this by actually making an HTML version of the form that pops up every time though who knows
@@ -168,6 +170,22 @@ function autoComplete(inp, arr) {
         activeElements.getElementsByTagName("DIV")[currentFocus].classList.remove("autocomplete-active");
     }
 }
+var mockLabel;
+mockLabel = {
+    servingSize: [5, "cups"],
+    calories: 500,
+    nutrients: {
+        fats: {
+            totFat: [5, "oz"]
+        },
+        cholesterol: [7, "oz"],
+        sodium: [5, "g"],
+        carbohydrates: {
+            totCarbohydrates: [70, "g"]
+        },
+        protein: [50, "g"]
+    }
+};
 // nutritionLabel: NutritionLabel = {
 //     servingSize: 277,
 //     calories: 280,

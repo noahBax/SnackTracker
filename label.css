@@ -1,0 +1,40 @@
+:root {
+    --label-width: 300px;
+}
+table, th, td {
+    border-bottom: 1px solid black;
+    border-collapse: collapse;
+    padding: 3px;
+}
+table {
+    width: var(--label-width);
+    white-space: nowrap;
+}
+th:nth-child(2), td:nth-child(2) {
+    text-align: right;
+    font-weight: bold;
+}
+th:nth-child(1), td:nth-child(1) {
+    text-align: left;
+}
+h1, h4, h6, h2, h3, h5 {
+    margin: unset;
+}
+body {
+    font-family: sans-serif;
+}
+[block] {
+    background-color: black;
+}
+[tabbed]::before {
+    content: "\00a0\00a0\00a0";
+}
+[important] {
+    font-weight: bold;
+}
+.label-wrapper {
+    padding: 6px;
+    border: 1px solid black;
+    width: var(--label-width);
+    background-color: white;
+}

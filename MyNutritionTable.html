@@ -36,9 +36,15 @@
         [important] {
             font-weight: bold;
         }
+        .label-wrapper {
+            padding: 6px;
+            border: 1px solid black;
+            width: 250px;
+        }
     </style>
 </head>
 <body>
+    <div class="label-wrapper">
     <table>
         <tr>
             <th colspan="2"><h2>Nutrition Facts</h2></th>
@@ -61,7 +67,7 @@
             <td colspan="2" style="text-align: right;"><h5>% Daily Value</h5></td>
         </tr>
         <tr>
-            <td><strong>Fat</strong> 9g</td>
+            <td><strong>Total Fat</strong> 9g</td>
             <td>12%</td>
         </tr>
         <tr>
@@ -119,6 +125,7 @@
             <td>10%</td>
         </tr>
     </table>
+    </div>
     <script>
         nutritionLabel = {
             servingSize: 277,
