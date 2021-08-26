@@ -1,5 +1,9 @@
 // Todo: Test out a mock nutrition label with the added "nutrtion-label element", you will need to make a nutrition object first
 //  Todo: Complete the nutrition label test by making a fulll label
+/*
+a = new NutritionLabel(mockLabel)
+document.body.appendChild(a)
+*/
 // Todo: Make it so that the nutrition label for each item pops up when it is selected
 // Todo: Make it so that selecting the question-div pops up a form which can be filled in in the shape of a nutrition label
 // I suggest doing this by actually making an HTML version of the form that pops up every time though who knows
