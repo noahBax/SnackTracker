@@ -5,13 +5,14 @@ body {
     align-content: center;
     justify-content: center;
     height: 100%;
+    flex-direction: column;
 }
 
-#main-box {
+.autocomplete {
     box-sizing: border-box;
 }
 
-#main-box * {
+.autocomplete * {
     box-sizing: border-box;
 }
 
@@ -19,6 +20,7 @@ body {
     /*the contain: must be positioned relative*/
     position: relative;
     display: inline-block;
+    width: var(--label-width);
 }
 
 input {
@@ -48,6 +50,8 @@ input[type=submit] {
     top: 100%;
     left: 0;
     right: 0;
+    max-height: 464px;
+    overflow-y: auto;
 }
 
 .autocomplete-items div {
@@ -76,4 +80,12 @@ input[type=submit] {
     margin: 5px;
     border-radius: 7px;
     color: white;
+}
+
+.autocomplete-active i {
+    color: #eaeaea !important;
+}
+#autocomplete-list i {
+    font-size: 12px;
+    color: gray;
 }

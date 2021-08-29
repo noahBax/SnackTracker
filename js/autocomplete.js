@@ -8,6 +8,14 @@ document.body.appendChild(a)
 // Todo: Make it so that selecting the question-div pops up a form which can be filled in in the shape of a nutrition label
 // I suggest doing this by actually making an HTML version of the form that pops up every time though who knows
 const QUESTION_VALUE = "question_value";
+var nameList = [];
+var dataBase = [];
+localforage.getItem('nameList').then(list => {
+    nameList = list;
+});
+localforage.getItem('database').then(data => {
+    dataBase = data;
+});
 /**
  * Takes care of autocomplete items
  * @param inp The text field element
@@ -25,6 +33,8 @@ function autoComplete(inp, arr) {
     var currentFocus;
     // Execute a function when someone writes in the text field
     inp.addEventListener("input", function (e) {
+        // Dismiss the activelabel
+        dismissNutritionLabel();
         // Construct the searchQuery
         let searchQuery = new RegExp(this.value.toLowerCase(), 'g');
         // Close any already open lists of autocompleted values
@@ -54,14 +64,14 @@ function autoComplete(inp, arr) {
                         break;
                     }
                 }
-                if (this.value == arr[i]) {
-                    exactMatch = [arr[i], matches];
+                if (this.value.toLowerCase() == arr[i].toLowerCase()) {
+                    exactMatch = [arr[i], matches, i];
                 }
-                if (found) {
-                    searchMatchesBegin.push([arr[i], matches]);
+                else if (found) {
+                    searchMatchesBegin.push([arr[i], matches, i]);
                 }
                 else {
-                    searchMatchesRandom.push([arr[i], matches]);
+                    searchMatchesRandom.push([arr[i], matches, i]);
                 }
             }
         }
@@ -72,12 +82,12 @@ function autoComplete(inp, arr) {
             return false;
         }
         if (exactMatch != null)
-            addSearchDiv(exactMatch[0], exactMatch[1]);
+            addSearchDiv(exactMatch[0], exactMatch[1], exactMatch[2]);
         for (let i = 0; i < searchMatchesBegin.length; i++) {
-            addSearchDiv(searchMatchesBegin[i][0], searchMatchesBegin[i][1]);
+            addSearchDiv(searchMatchesBegin[i][0], searchMatchesBegin[i][1], searchMatchesBegin[i][2]);
         }
         for (let i = 0; i < searchMatchesRandom.length; i++) {
-            addSearchDiv(searchMatchesRandom[i][0], searchMatchesRandom[i][1]);
+            addSearchDiv(searchMatchesRandom[i][0], searchMatchesRandom[i][1], searchMatchesRandom[i][2]);
         }
         addActive();
     });
@@ -103,12 +113,13 @@ function autoComplete(inp, arr) {
                 e.preventDefault();
                 // And update the input field if needed
                 if (currentFocus > -1) {
-                    let entry = activeElements.getElementsByTagName("div")[currentFocus].getElementsByTagName("input")[0].value;
+                    let entry = activeElements.getElementsByTagName("div")[currentFocus].getElementsByTagName("input")[0].name;
                     if (entry == QUESTION_VALUE) {
                         questionClicked();
                     }
                     else {
-                        inp.value = activeElements.getElementsByTagName("div")[currentFocus].getElementsByTagName("input")[0].value;
+                        inp.value = activeElements.getElementsByTagName("div")[currentFocus].getElementsByTagName("input")[0].name;
+                        itemSelected(activeElements.getElementsByTagName("div")[currentFocus].getElementsByTagName("input")[0].indexNumber);
                     }
                     // CLose the lists of autocompleted values
                     closeAllLists();
@@ -116,7 +127,7 @@ function autoComplete(inp, arr) {
             }
         }
     });
-    function addSearchDiv(item, matches) {
+    function addSearchDiv(item, matches, index) {
         // Create a DIV element for the matching search
         let a = document.createElement("DIV");
         a.innerHTML = "";
@@ -128,12 +139,15 @@ function autoComplete(inp, arr) {
         }
         // Add the remaining part of the strign
         a.innerHTML += item.substr(cursor);
+        // Add the calories, serving, and brand
+        a.innerHTML += "<br><i>" + dataBase[index].calories + " cals - " + printMeasurement(dataBase[index].servingSize, true) + " - " + dataBase[index].brand + "</i>";
         // Insert a hidden input field that will hold the current array item's value
-        a.innerHTML += "<input type='hidden' value='" + item + "'>";
+        a.innerHTML += "<input type='hidden' name='" + item + "' indexNumber='" + index + "'>";
         // Call a function when someoen clicks on this DIV element
         a.addEventListener("click", function (e) {
             // Insert the value fo rthe autocomplete text field
             inp.value = item;
+            itemSelected(index);
             // CLose the lists of autocompleted values
             closeAllLists();
         });
@@ -143,7 +157,7 @@ function autoComplete(inp, arr) {
         let a = document.createElement("DIV");
         a.innerHTML = "<i>Not in database, add an entry?</i>";
         // Insert a hidden input field that will hold the current array item's value
-        a.innerHTML += "<input type='hidden' value='" + QUESTION_VALUE + "'>";
+        a.innerHTML += "<input type='hidden' name='" + QUESTION_VALUE + "'>";
         a.classList.add("question-div");
         a.addEventListener("click", function (e) {
             questionClicked();
@@ -174,22 +188,9 @@ function autoComplete(inp, arr) {
         activeElements.getElementsByTagName("DIV")[currentFocus].classList.remove("autocomplete-active");
     }
 }
-var mockLabel;
-mockLabel = {
-    servingSize: [5, "cups"],
-    calories: 500,
-    nutrients: {
-        fats: {
-            totFat: [5, "oz"]
-        },
-        cholesterol: [7, "oz"],
-        sodium: [5, "g"],
-        carbohydrates: {
-            totCarbohydrates: [70, "g"]
-        },
-        protein: [50, "g"]
-    }
-};
+function itemSelected(index) {
+    attachNutritionLabel(dataBase[index]);
+}
 // nutritionLabel: NutritionLabel = {
 //     servingSize: 277,
 //     calories: 280,

@@ -37,4 +37,5 @@ body {
     border: 1px solid black;
     width: var(--label-width);
     background-color: white;
+    margin: 18px;
 }

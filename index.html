@@ -6,11 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Snack Tracker</title>
 
+    <script src="js/localforage.min.js"></script>
     <script src="js/autocomplete.js"></script>
     <script src="js/generateLabel.js"></script>
     <script src="js/labelData.js"></script>
     <script src="js/labelRow.js"></script>
     <script src="js/RowBlock.js"></script>
+    <script src="js/transition.js"></script>
+    <script src="js/maintenance.js"></script>
+    <script src="js/sourceData.js"></script>
 
     <link href="index.css" rel="stylesheet">
     <link href="label.css" rel="stylesheet">
@@ -26,7 +30,7 @@
 <body>
     <div id="main-box">
         <form autocomplete="off">
-            <div class="autocomplete" style="width: 300px;">
+            <div class="autocomplete">
                 <input id="myInput" type="text" name="myFood" placeholder="Food">
             </div>
             
@@ -35,9 +39,13 @@
 
     <script>
         var foods = ["Asparagus","Apples","Avacado","Alfalfa","Acorn Squash","Almond","Arugala","Artichoke","Applesauce","Asian Noodles","Antelope","Ahi Tuna","Albacore Tuna","Apple Juice","Avocado Roll","Bruscetta","Bacon","Black Beans","Bagels","Baked Beans","BBQ","Bison","Barley","Beer","Bisque","Bluefish","Bread","Broccoli","Buritto","Babaganoosh","Cabbage","Cake","Carrots","Carne Asada","Celery","Cheese","Chicken","Catfish","Chips","Chocolate","Chowder","Clams","Coffee","Cookies","Corn","Cupcakes","Crab","Curry","Cereal","Chimichanga","Dates","Dips","Duck","Dumplings","Donuts","Eggs","Enchilada","Eggrolls","English Muffins","Edimame","Eel Sushi","Fajita","Falafel","Fish","Franks","Fondu","French Toast","French Dip","Garlic","Ginger","Gnocchi","Goose","Granola","Grapes","Green Beans","Guancamole","Gumbo","Grits","Graham Crackers","Halibut","Hamburger","Ham","Cheeseburger","Honey","Huenos Rancheros","Hash Browns","Hot Dogs","Haiku Roll","Hummus","Ice Cream","Irish Stew","Indian Food","Italian Bread","Jambalaya","Jelly","Jam","Jerky","Jalapeño","Kale","Kabobs","Ketchup","Kiwi","Kidney Beans","Kingfish","Lobster","Lamb","Linguine","Lasagna","Meatballs","Moose","Milk","Milkshake","Noodles","Ostrich","Pizza","Pepperoni","Porter","Pancakes","Quesadilla","Quiche","Reuben","Spinach","Spaghetti","Tangerine","Tater Tots","Toast","Venison","Waffles","Wine","Walnuts","Yogurt","Ziti","Zucchini"];
-
-        autoComplete(document.getElementById("myInput"), foods);
-        console.log("hello");
+        localforage.getItem('nameList').then(list => {
+            nameList = list;
+            autoComplete(document.getElementById("myInput"), nameList);// foods
+        });
+        localforage.getItem('database').then(data => {
+            dataBase = data;
+        });
     </script>
 
 </body>
