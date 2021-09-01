@@ -1,5 +1,4 @@
 function printMeasurement(item: Measurement, includeSpace?: boolean): string {
-    console.warn("function 'printMeasurement' not fully implemented");
     
     return "" + item[0] + (includeSpace ? " " : "") + item[1];
 }

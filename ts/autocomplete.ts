@@ -52,7 +52,7 @@ function autoComplete(inp: HTMLInputElement, arr: string[]) {
         if (this.value == "") return false;
 
         currentFocus = 0;
-        let exactMatch: [string, number[], number] | null = null;
+        let exactMatches: [string, number[], number][] = [];
         let searchMatchesBegin: [string, number[], number][] = []; // query item, indexes
         let searchMatchesRandom: [string, number[], number][] = [];
 
@@ -76,7 +76,7 @@ function autoComplete(inp: HTMLInputElement, arr: string[]) {
                     }
                 }
                 if (this.value.toLowerCase() == arr[i].toLowerCase()) {
-                    exactMatch = [arr[i],matches, i];
+                    exactMatches.push([arr[i],matches, i]);
                 } else if (found) {
                     searchMatchesBegin.push([arr[i],matches, i]);
                 } else {
@@ -86,13 +86,15 @@ function autoComplete(inp: HTMLInputElement, arr: string[]) {
         }
 
         // If there are no results, cancel
-        if (searchMatchesRandom.length == 0 && searchMatchesBegin.length == 0 && exactMatch == null) {
+        if (searchMatchesRandom.length == 0 && searchMatchesBegin.length == 0 && exactMatches.length == 0) {
             addQuestionDiv();
             addActive();
             return false;
         }
         
-        if (exactMatch != null) addSearchDiv(exactMatch[0], exactMatch[1], exactMatch[2]);
+        for (let i = 0; i < exactMatches.length; i++) {
+            addSearchDiv(exactMatches[i][0], exactMatches[i][1], exactMatches[i][2]);
+        }
 
         for (let i = 0; i < searchMatchesBegin.length; i++) {
             addSearchDiv(searchMatchesBegin[i][0], searchMatchesBegin[i][1], searchMatchesBegin[i][2]);
@@ -154,8 +156,11 @@ function autoComplete(inp: HTMLInputElement, arr: string[]) {
         // Add the remaining part of the strign
         a.innerHTML += item.substr(cursor);
 
+        // Add in the id
+        a.innerHTML += " <i>#" + index + "</i>";
+
         // Add the calories, serving, and brand
-        a.innerHTML += "<br><i>" + dataBase[index].calories + " cals - " + printMeasurement(dataBase[index].servingSize, true) + " - " + dataBase[index].brand + "</i>";
+        a.innerHTML += "<br><i>" + dataBase[index].calories + " cals - " + printMeasurement(dataBase[index].servingSize, true) + " - " + dataBase[index].brand + " - " + dataBase[index].dateAdded.getMonth() + "/" + dataBase[index].dateAdded.getDate() + "/" + dataBase[index].dateAdded.getFullYear() + "</i>";
 
         // Insert a hidden input field that will hold the current array item's value
         a.innerHTML += "<input type='hidden' name='" + item + "' indexNumber='" + index + "'>";
@@ -227,6 +232,8 @@ interface NutrientInfo {
     servingSize: Measurement,
     calories: number,
     ingedients: string[],
+    dateAdded: Date,
+    brandIdentifier: string | number,
     nutrients: {
         fats: {
             totFat: Measurement,

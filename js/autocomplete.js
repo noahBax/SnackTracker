@@ -43,7 +43,7 @@ function autoComplete(inp, arr) {
         if (this.value == "")
             return false;
         currentFocus = 0;
-        let exactMatch = null;
+        let exactMatches = [];
         let searchMatchesBegin = []; // query item, indexes
         let searchMatchesRandom = [];
         // For each item in the tempListay...
@@ -65,7 +65,7 @@ function autoComplete(inp, arr) {
                     }
                 }
                 if (this.value.toLowerCase() == arr[i].toLowerCase()) {
-                    exactMatch = [arr[i], matches, i];
+                    exactMatches.push([arr[i], matches, i]);
                 }
                 else if (found) {
                     searchMatchesBegin.push([arr[i], matches, i]);
@@ -76,13 +76,14 @@ function autoComplete(inp, arr) {
             }
         }
         // If there are no results, cancel
-        if (searchMatchesRandom.length == 0 && searchMatchesBegin.length == 0 && exactMatch == null) {
+        if (searchMatchesRandom.length == 0 && searchMatchesBegin.length == 0 && exactMatches.length == 0) {
             addQuestionDiv();
             addActive();
             return false;
         }
-        if (exactMatch != null)
-            addSearchDiv(exactMatch[0], exactMatch[1], exactMatch[2]);
+        for (let i = 0; i < exactMatches.length; i++) {
+            addSearchDiv(exactMatches[i][0], exactMatches[i][1], exactMatches[i][2]);
+        }
         for (let i = 0; i < searchMatchesBegin.length; i++) {
             addSearchDiv(searchMatchesBegin[i][0], searchMatchesBegin[i][1], searchMatchesBegin[i][2]);
         }
@@ -139,8 +140,10 @@ function autoComplete(inp, arr) {
         }
         // Add the remaining part of the strign
         a.innerHTML += item.substr(cursor);
+        // Add in the id
+        a.innerHTML += " <i>#" + index + "</i>";
         // Add the calories, serving, and brand
-        a.innerHTML += "<br><i>" + dataBase[index].calories + " cals - " + printMeasurement(dataBase[index].servingSize, true) + " - " + dataBase[index].brand + "</i>";
+        a.innerHTML += "<br><i>" + dataBase[index].calories + " cals - " + printMeasurement(dataBase[index].servingSize, true) + " - " + dataBase[index].brand + " - " + dataBase[index].dateAdded.getMonth() + "/" + dataBase[index].dateAdded.getDate() + "/" + dataBase[index].dateAdded.getFullYear() + "</i>";
         // Insert a hidden input field that will hold the current array item's value
         a.innerHTML += "<input type='hidden' name='" + item + "' indexNumber='" + index + "'>";
         // Call a function when someoen clicks on this DIV element

@@ -5,3 +5,7 @@ function dumpDatabaseToEmptyPage() {
             wnd.document.body.innerHTML += (JSON.stringify(item));
     });
 }
+function resetDatbase() {
+    localforage.setItem("database", []);
+    localforage.setItem("nameList", []);
+}

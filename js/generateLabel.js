@@ -10,6 +10,7 @@ class NutritionLabel extends HTMLDivElement {
         this.generateTop();
         this.generateMacroNutrients();
         this.generateMicroNutrients();
+        this.generateIngredients();
     }
     generateTop() {
         this.bodyPart.innerHTML = "<tr><th colspan='2'><h2>Nutrition Facts</h2></th></tr>";
@@ -72,11 +73,16 @@ class NutritionLabel extends HTMLDivElement {
     }
     generateMicroNutrients() {
         for (const micro in this.data.nutrients) {
-            console.log(micro);
             if (!["fats", "carbohydrates", "sodium", "cholesterol", "protein"].includes(micro)) {
                 this.bodyPart.appendChild(new LabelRow(nutrientNames[micro] + " " + printMeasurement(this.data.nutrients[micro]), calculatePercent(this.data.nutrients[micro], micro)));
             }
         }
+    }
+    generateIngredients() {
+        let span = document.createElement("span");
+        span.classList.add("ingredients");
+        span.innerHTML = "<strong>Ingredients: </strong>" + this.data.ingedients.join(", ");
+        this.appendChild(span);
     }
     connectedCallback() {
     }
