@@ -229,6 +229,7 @@ interface NutrientInfo {
     label: {};
     name: string,
     brand: string,
+    dataBaseId: number,
     servingSize: Measurement,
     calories: number,
     ingedients: string[],

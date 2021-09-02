@@ -41,7 +41,7 @@ function addIITCommonsData(dataAdded) {
             label.calories = food.calories;
             // Name
             let nameArray = food.name.trim().split(" ");
-            nameArray.map(word => {
+            nameArray = nameArray.map(word => {
                 if (!["with", "in", "de", "and"].includes(word)) {
                     return word.charAt(0).toUpperCase() + word.slice(1);
                 }

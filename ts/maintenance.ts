@@ -1,3 +1,4 @@
+
 function dumpDatabaseToEmptyPage() {
     let wnd = window.open("about:blank", "", "_blank");
     dataBase.forEach(item => {
