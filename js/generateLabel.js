@@ -1,4 +1,6 @@
 class NutritionLabel extends HTMLDivElement {
+    data;
+    bodyPart;
     constructor(data) {
         super();
         this.data = data;

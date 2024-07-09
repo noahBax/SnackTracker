@@ -13,7 +13,7 @@ class MealPlanManager {
 
     static addMealInstance(nutritionLabel: NutrientInfo, mealTime: Date) {
         MealPlanManager.mealHistory.push({
-            dataBaseId: nutritionLabel.dataBaseId,
+            dataBaseId: nutritionLabel.databaseId,
             timeSubmitted: Date.now(),
             timeEaten: mealTime.getTime()
         });

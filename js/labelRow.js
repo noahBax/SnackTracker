@@ -1,4 +1,6 @@
 class LabelRow extends HTMLTableRowElement {
+    first;
+    second;
     constructor(first, second) {
         super();
         this.first = document.createElement("td");

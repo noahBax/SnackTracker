@@ -12,11 +12,19 @@ const QUESTION_VALUE = "question_value";
 var nameList: string[] = [];
 var dataBase: NutrientInfo[] = [];
 
+interface Storage {
+    Ingredients: string[],
+    Allergens: string[],
+    Labels: string[],
+    data: NutrientInfo[],
+    nameList: string[]
+}
+
 localforage.getItem('nameList').then(list => {
-    nameList = list;
+    nameList = list as string[];
 });
 localforage.getItem('database').then(data => {
-    dataBase = data;
+    dataBase = data as NutrientInfo[];
 });
 
 /**
@@ -225,61 +233,109 @@ type Measurement = [number, string]
 function itemSelected(index: number) {
     attachNutritionLabel(dataBase[index]);
 }
+
+enum MeasurementUnits {
+    g = 1,
+    kcal,
+    mg,
+    RE,
+    IU,
+    cup,
+    ounce,
+    oz,
+    half,
+    plate,
+    floz,
+    slice,
+    each,
+    tbsp,
+    wedge,
+    piece,
+    tsp,
+    ladle2oz,
+    ladle4oz,
+    ladle6oz,
+    serving,
+    sandwich,
+    ladle8oz
+}
+
+interface Fats {
+    totFat: Measurement,
+    transFat?: Measurement,
+    satFat?: Measurement,
+    polyUnsaturatedFat?: Measurement,
+    monoUnsaturatedFat?: Measurement
+}
+
+interface Carbohydrates {
+    totCarbohydrates: Measurement,
+    dietaryFiber?: Measurement,
+    sugars?: Measurement,
+    addedSugars?: Measurement
+}
+
+interface BVitamins {
+    biotin_B7?: Measurement,
+    cobalamin_B12?: Measurement,
+    folate_B9?: Measurement,
+    niacin_B3?: Measurement,
+    pantothenicAcid_B5?: Measurement,
+    pyridoxine_B6?: Measurement,
+    riboflavin_B2?: Measurement,
+    thiamin_B1?: Measurement
+}
+
+interface Vitamins {
+    bVitamins?: BVitamins
+    vitaminA?: Measurement,
+    vitaminC?: Measurement,
+    vitaminD?: Measurement,
+    vitaminE?: Measurement,
+    vitaminK?: Measurement
+}
+
+interface Minerals {
+    calcium?: Measurement
+    chloride?: Measurement
+    chromium?: Measurement
+    copper?: Measurement
+    fluoride?: Measurement
+    iodine?: Measurement
+    iron?: Measurement
+    magnesium?: Measurement
+    manganese?: Measurement
+    molybdenum?: Measurement
+    phosphorus?: Measurement
+    potassium?: Measurement
+    sodium: Measurement
+    zinc?: Measurement
+    choline?: Measurement
+    selenium?: Measurement
+}
+
+interface Nutrients {
+    fats?: Fats,
+    cholesterol?: Measurement,
+    sodium: Measurement,
+    carbohydrates: Carbohydrates,
+    protein: Measurement,
+    vitamins: Vitamins
+    minerals: Minerals
+}
+
 interface NutrientInfo {
-    label: {};
     name: string,
     brand: string,
-    dataBaseId: number,
+    databaseId: number,
     servingSize: Measurement,
     calories: number,
     ingedients: string[],
     dateAdded: Date,
     brandIdentifier: string | number,
-    nutrients: {
-        fats: {
-            totFat: Measurement,
-            transFat?: Measurement,
-            satFat?: Measurement,
-            polyUnsaturadedFat?: Measurement,
-            monoUnsaturatedFat?: Measurement
-        }
-        cholesterol?: Measurement,
-        sodium: Measurement,
-        carbohydrates: {
-            totCarbohydrates: Measurement,
-            dietaryFiber?: Measurement,
-            sugars?: Measurement,
-            addedSugars?: Measurement
-        },
-        protein: Measurement,
-        biotin?: Measurement,
-        calcium?: Measurement,
-        chloride?: Measurement,
-        choline?: Measurement,
-        chromium?: Measurement,
-        copper?: Measurement,
-        folate?: Measurement,
-        iodine?: Measurement,
-        iron?: Measurement,
-        magnesium?: Measurement,
-        manganese?: Measurement,
-        molybdenum?: Measurement,
-        niacin?: Measurement,
-        pantothenicAcid?: Measurement,
-        phosphorus?: Measurement,
-        potassium?: Measurement,
-        riboflavin?: Measurement,
-        selenium?: Measurement,
-        thiamin?: Measurement,
-        vitaminA?: Measurement,
-        vitaminB6?: Measurement,
-        vitaminB12?: Measurement,
-        vitaminC?: Measurement,
-        vitaminD?: Measurement,
-        vitaminE?: Measurement,
-        vitaminK?: Measurement,
-        zinc?: Measurement
-    }
+    labels: number[],
+    allergens: number[],
+    nutrients: Nutrients
 }
 
 // nutritionLabel: NutritionLabel = {

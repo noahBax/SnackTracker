@@ -194,6 +194,32 @@ function autoComplete(inp, arr) {
 function itemSelected(index) {
     attachNutritionLabel(dataBase[index]);
 }
+var MeasurementUnits;
+(function (MeasurementUnits) {
+    MeasurementUnits[MeasurementUnits["g"] = 1] = "g";
+    MeasurementUnits[MeasurementUnits["kcal"] = 2] = "kcal";
+    MeasurementUnits[MeasurementUnits["mg"] = 3] = "mg";
+    MeasurementUnits[MeasurementUnits["RE"] = 4] = "RE";
+    MeasurementUnits[MeasurementUnits["IU"] = 5] = "IU";
+    MeasurementUnits[MeasurementUnits["cup"] = 6] = "cup";
+    MeasurementUnits[MeasurementUnits["ounce"] = 7] = "ounce";
+    MeasurementUnits[MeasurementUnits["oz"] = 8] = "oz";
+    MeasurementUnits[MeasurementUnits["half"] = 9] = "half";
+    MeasurementUnits[MeasurementUnits["plate"] = 10] = "plate";
+    MeasurementUnits[MeasurementUnits["floz"] = 11] = "floz";
+    MeasurementUnits[MeasurementUnits["slice"] = 12] = "slice";
+    MeasurementUnits[MeasurementUnits["each"] = 13] = "each";
+    MeasurementUnits[MeasurementUnits["tbsp"] = 14] = "tbsp";
+    MeasurementUnits[MeasurementUnits["wedge"] = 15] = "wedge";
+    MeasurementUnits[MeasurementUnits["piece"] = 16] = "piece";
+    MeasurementUnits[MeasurementUnits["tsp"] = 17] = "tsp";
+    MeasurementUnits[MeasurementUnits["ladle2oz"] = 18] = "ladle2oz";
+    MeasurementUnits[MeasurementUnits["ladle4oz"] = 19] = "ladle4oz";
+    MeasurementUnits[MeasurementUnits["ladle6oz"] = 20] = "ladle6oz";
+    MeasurementUnits[MeasurementUnits["serving"] = 21] = "serving";
+    MeasurementUnits[MeasurementUnits["sandwich"] = 22] = "sandwich";
+    MeasurementUnits[MeasurementUnits["ladle8oz"] = 23] = "ladle8oz";
+})(MeasurementUnits || (MeasurementUnits = {}));
 // nutritionLabel: NutritionLabel = {
 //     servingSize: 277,
 //     calories: 280,

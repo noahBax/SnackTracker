@@ -1,5 +1,6 @@
 const MEALHISTORYOBJECT = "mealHistoryObject";
 class MealPlanManager {
+    static mealHistory = [];
     static init() {
         localforage.getItem(MEALHISTORYOBJECT).then(item => {
             MealPlanManager.mealHistory = item ?? [];
@@ -9,7 +10,7 @@ class MealPlanManager {
     }
     static addMealInstance(nutritionLabel, mealTime) {
         MealPlanManager.mealHistory.push({
-            dataBaseId: nutritionLabel.dataBaseId,
+            dataBaseId: nutritionLabel.databaseId,
             timeSubmitted: Date.now(),
             timeEaten: mealTime.getTime()
         });
@@ -31,7 +32,6 @@ class MealPlanManager {
         if (currentIndex == -1) { }
     }
 }
-MealPlanManager.mealHistory = [];
 var times;
 (function (times) {
     times[times["breakfast"] = 0] = "breakfast";
